@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+    <title>Joy of mapping</title>
+
+    <link rel="stylesheet" href="https://uky-gis.github.io/geo509/slides/dist/reset.css" />
+    <link rel="stylesheet" href="https://uky-gis.github.io/geo509/slides/dist/reveal.css" />
+    <link rel="stylesheet" href="https://uky-gis.github.io/geo509/slides/dist/theme/league-109.css" id="theme" />
+
+    <!-- Theme used for syntax highlighted code -->
+    <link rel="stylesheet" href="https://uky-gis.github.io/geo509/slides/dist/plugin/highlight/zenburn.css" id="highlight-theme" />
+    <style>
+        /* UK Colors: 
+                #c7c9c8 light gray 
+                #63666a dark gray
+                #15397f dark blue
+                #009bda light blue
+                #0033a0 official blue
+            */
+
+        .top-module {
+            position: absolute;
+            bottom: 1.5em;
+            left: 20px;
+            z-index: 3333;
+            font-size: 0.5em;
+            opacity: 0.5;
+        }
+
+        .item-download {
+            position: absolute !important;
+            /* left: 0 !important;
+      bottom: 0 !important; */
+            transform: translate(calc(100vw/2*-1), 100px) !important;
+            z-index: 9999;
+            font-size: 0.5em;
+            opacity: 1;
+        }
+        .highlight-p {
+            background-color: #63666a;
+            padding: 2px;
+        }
+
+        .reveal pre {
+            font-size: 0.7em;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="reveal">
+        <div class="top-module">
+            <a target='_blank' href="https://github.com/uky-gis/pro-relief/">Repo</a>
+        </div>
+        <div class="slides">
+            <section data-pre-load
+                data-background-image="https://outragegis.com/weather/img/animation/yesterday/LookRock.gif"
+                data-background-opacity="0.4">
+                <h5 style="font-size:3.2em;margin-bottom:0.5em;">The joy of mapping</h5>
+                <!-- <h2>Welcome</h2> -->
+                <div class="ll" style="opacity:60%;">
+                    Yesterday in the Great Smokies<br />Webcam
+                    <a href="https://www.outragegis.com/weather/img/animation" target="_blank">archive</a>
+                </div>
+                
+            </section>
+            <section data-pre-load
+                data-background-image="https://outragegis.com/weather/img/animation/yesterday/LookRock.gif"
+                data-background-opacity="0.4">
+                <div style="float:left;text-align:left; position: absolute;
+                top: 50%;
+                transform: translateY(-50%);"><h5 style="font-size:2.5em;margin-bottom:0em;">with Boyd</h5>
+                   <span style="color:rgb(215, 135, 175);">boyd.xyz/j</span> </div>
+                <div style="float:right"><img src="https://avatars1.githubusercontent.com/u/5296983?s=460&v=4" style="border-radius:50%" alt=""></div>
+
+            </section>
+            <section class='left'
+                data-background-image='images/z01.jpg'
+                data-background-opacity="1"
+                data-background-color="#666">
+            </section>
+            <section class='left'
+                data-background-image='images/wolf-creek-dam.jpg'
+                data-background-opacity="1"
+                data-background-size="contain"
+                data-background-color="#fff">
+            </section>
+            <section class='left'
+                data-background-image='images/wolf-creek-dam-2.jpg'
+                data-background-opacity="1"
+                data-background-color="#fff">
+            </section>
+            <section class='left'
+                data-background-image='images/wolf-creek-dam-2.jpg'
+                data-background-opacity="0.5"
+                data-background-color="#111">
+                <h2 class="r-fit-text">Lidar</h2>
+            </section>
+            <section class='left'
+                data-background-image='images/wolf-creek-dam-2.jpg'
+                data-background-opacity="0.5"
+                data-background-color="#111">
+                <h3 class="r-fit-text">give us<br>
+                    <span class="fragment">above ground features</span>
+                    <br>
+                    <span class="fragment">statewide.</span>
+                </h3>
+            </section>
+            <section data-pre-load
+                data-background-image="https://www.typeroom.eu/assets/original/2020/05/18/JoyDivision-UnknownPleasures-B1.jpg"
+                data-background-opacity="1"
+                data-background-size="contain"
+                data-background-color="#000">
+            </section>
+            <section data-pre-load
+                data-background-image="https://www.typeroom.eu/assets/original/2020/05/18/JoyDivision-UnknownPleasures-B1.jpg"
+                data-background-opacity="0.2"
+                data-background-size="contain"
+                data-background-color="#000">
+                <h1 ><a href="https://youtu.be/PDCeGZ3n8jY" target="_blank">🎶</a></h1>
+                <div class='lr'>Bizarre Love Triangle
+                    <br>&copy;1987 New Order</div>
+                   
+                
+
+            </section>
+
+            <section class='left'
+            data-background-image='https://www.typeroom.eu/assets/original/2020/05/18/JoyDivision-UnknownPleasures-B1.jpg'
+            data-background-opacity="0.2"
+            data-markdown data-separator="___" data-background-color=#2D2D2D>
+            <textarea data-template>
+```py 
+# Import ArcGIS Pro site package
+import arcpy
+```
+___
+```py [1-2|1-5|1-10]
+# Location of geodatabase
+arcpy.env.workspace = 'c:/BoydsGIS/j/joy.gdb'
+
+# Let's not add output to map
+arcpy.env.addOutputsToMap = False
+
+# Set our CRS
+ky = arcpy.SpatialReference(3089)
+wgs84 = arcpy.SpatialReference(4326)
+```
+___
+```py [1-3|1-6]
+# Set our area of interest
+lat = 38.1317719
+lon = -84.5049721
+
+# Distance in feet from lat,lon
+buffer = 1000
+```
+___
+```py
+# KyFromAbove Rest endpoint
+dsm = 'https://kyraster.ky.gov/arcgis/rest/services/ElevationServices/Ky_DSM_First_Return_5FT_Phase1/ImageServer'
+```
+___
+```py [1-3|1-7]
+# Create area of interest center point
+point = arcpy.Point(lon, lat) 
+ptGeometry = arcpy.PointGeometry(point, wgs84)
+arcpy.env.outputCoordinateSystem = ky
+arcpy.CopyFeatures_management(ptGeometry, "point")
+```
+___
+```py [1-2|1-5]
+# Buffer and square our area of interest
+arcpy.analysis.Buffer("point", "aoi", buffer)
+arcpy.env.addOutputsToMap = True
+arcpy.management.FeatureEnvelopeToPolygon('aoi', 'square_aoi')
+arcpy.env.addOutputsToMap = False
+```
+___
+```py [1-2|1-6]
+# Create collar for block diagram edges
+arcpy.analysis.Buffer('square_aoi', 'clip', -10)
+arcpy.analysis.Erase('square_aoi', 'clip', 'collar')
+```
+___
+```py [1-3|1-6]
+# Extract DSM from area of interest
+a = arcpy.sa.ExtractByMask(dsm, 'square_aoi')
+a.save('dsm')
+print(f"{a.minimum} is our lowest elevation. That's our floor")
+```
+___
+```py 
+# Verify
+b = arcpy.sa.Raster('dsm')
+b
+```
+
+___
+```py [1-2|1-6]
+# Create DSM surface with collared edges
+arcpy.PolygonToRaster_conversion("collar", "ORIG_FID", "zero_raster", "#", "#", 5)
+c = arcpy.sa.Con(arcpy.sa.IsNull('zero_raster'), b, b.minimum)
+c.save('surface')
+```
+
+___
+```py
+# Add vertices along line every 5 feet
+arcpy.edit.Densify('lines', '#', 5)
+```
+___
+```py
+# Add elevation to lines
+arcpy.ddd.UpdateFeatureZ('lines', 'surface')
+```
+            </textarea>
+        </section>
+
+
+            <section class='left'
+                data-background-image='https://nyc3.digitaloceanspaces.com/astoria/pro-relief/images/end.jpg'
+                data-background-opacity="1"
+                data-background-size="contain"
+                data-background-color="#666">
+            </section>
+
+            <section class='left'
+                data-background-image='images/e1.jpg'
+                data-background-opacity="1"
+                data-background-size="contain"
+                data-background-color="#666">
+            </section>
+
+            <section class='left'
+                data-background-image='images/e2.jpg'
+                data-background-opacity="1"
+                data-background-size="contain"
+                data-background-color="#666">
+            </section>
+
+            <section class='left'
+                data-background-image='images/e3.jpg'
+                data-background-opacity="1"
+                data-background-size="contain"
+                data-background-color="#666">
+            </section>
+
+            <section class='left'
+                data-background-image='images/e0.jpg'
+                data-background-opacity="1"
+                data-background-size="contain"
+                data-background-color="#666">
+            </section>
+            
+            <section data-pre-load
+                data-background-image="https://outragegis.com/weather/img/animation/yesterday/LookRock.gif"
+                data-background-opacity="0.4">
+                <h5>Thank you</h5>
+                <span style="color:rgb(215, 135, 175);">boyd.xyz/j</span>
+            </section>
+        </div>
+    </div>
+
+    <script src="https://uky-gis.github.io/geo509/slides/dist/reveal.js"></script>
+    <script src="https://uky-gis.github.io/geo509/slides/dist/plugin/notes/notes.js"></script>
+    <script src="https://uky-gis.github.io/geo509/slides/dist/plugin/markdown/markdown.js"></script>
+    <script src="https://uky-gis.github.io/geo509/slides/dist/plugin/highlight/highlight.js"></script>
+    <script>
+        // More info about initialization & config:
+        // - https://revealjs.com/initialization/
+        // - https://revealjs.com/config/
+        Reveal.initialize({
+            hash: true,
+            backgroundTransition: "fade",
+            // Transition style
+            transition: "fade", // none/fade/slide/convex/concave/zoom
+
+            // Transition speed
+            transitionSpeed: "fast", // default/fast/slow
+
+            // Learn about plugins: https://revealjs.com/plugins/
+            plugins: [RevealMarkdown, RevealHighlight, RevealNotes],
+        });
+    </script>
+</body>
+
+</html>

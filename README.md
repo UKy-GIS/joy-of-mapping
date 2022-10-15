@@ -2,7 +2,7 @@
 
 An example of creating block diagrams inspired by Joy Division's 1979 *Unknown Pleasures* album cover using Kentucky's new state-wide Digital Surface Model created from recent Lidar data collection. 
 
-* Presentation: [slides](https//uky-gis.github.io/joy-of-mapping/index.html)
+* Presentation: [slides](https://uky-gis.github.io/joy-of-mapping/index.html)
 * ArcGIS Pro Jupyter [notebook](joy.ipynb)
 
 ## Sources

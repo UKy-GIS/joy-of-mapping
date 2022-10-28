@@ -4,6 +4,7 @@ An example of creating block diagrams inspired by Joy Division's 1979 *Unknown P
 
 * Presentation: [slides](https://uky-gis.github.io/joy-of-mapping/index.html)
 * ArcGIS Pro Jupyter [notebook](joy.ipynb)
+* Geoawareness Week [page](https://github.com/uky-gis/geoawareness/)
 
 ## Sources
 
